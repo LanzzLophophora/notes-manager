@@ -1,8 +1,6 @@
-import { LOG_OUT, LOG_IN, AUTH_REQUEST, AUTH_SUCCESS, AUTH_ERROR } from './constants';
-// import firebase from '../config/Fire';
+import { LOG_OUT, SET_NAME, AUTH_REQUEST, AUTH_SUCCESS, AUTH_ERROR } from './constants';
 
 const initialState = {
-  // user: firebase.auth().currentUser,
   user: undefined,
   isLoading: false,
   error: '',
@@ -31,16 +29,19 @@ export const authReducer = (state = initialState, action) => {
         error: action.payload
       };
 
+    case SET_NAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          nickname: action.payload
+        }
+      };
+
     case LOG_OUT:
       return {
         ...state,
         user: undefined
-      };
-
-    case LOG_IN:
-      return {
-        ...state,
-        noReg: true
       };
 
     default:
