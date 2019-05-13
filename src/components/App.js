@@ -1,23 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
-
+import Home from './Home';
 import LoginForm from './Login';
 import RegistrationForm from './RegistationForm';
 import Notes from './Notes';
-import Home from './Home';
 import Logout from './Logout';
 
 import { subscribeAuthentication } from '../store/auth/thunks';
 
 import './App.css';
 import "antd/dist/antd.css";
+import {push} from "connected-react-router";
 
 class App extends React.PureComponent {
   componentDidMount() {
     const { subscribeAuthentication } = this.props;
     subscribeAuthentication();
+
+    // const {user} = this.props.auth;
+    // console.log(user);
+    // if (!user) {
+    //   console.log("user is undef");
+    //   push('/login');
+    // }
+
   }
 
   render() {
@@ -29,32 +37,18 @@ class App extends React.PureComponent {
       )
     }
 
-    // if (error) {
-    //   return  <h3>{error}</h3>
-    // }
-    {/*<BrowserRouter>*/}
-    {/*</BrowserRouter>*/}
-
-    // if (!user) {
-    //       return (
-    //         <LoginForm/>
-    //         )
-    //     } else {
-    //       return (
-    //         <Home />
-    //       )
-    //     }
-
   return (
-          <Switch>
-            {/*<Route path="/" component={PrivatRoute} />*/}
-            <Route exact path="/" component={Home} />
-            <Route path="/register" component={RegistrationForm} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/logout" component={Logout} />
-            <Route path="/error" component={Notes} />
+         <div className="app">
+           <Switch>
+             {/*<Route path="/" component={PrivatRoute} />*/}
+             <Route exact path="/" component={Home} />
+             <Route exact path="/register" component={RegistrationForm} />
+             <Route exact path="/login" component={LoginForm} />
+             <Route exact path="/logout" component={Logout} />
+             <Route  path="/error" component={Notes} />
 
-          </Switch>
+           </Switch>
+         </div>
     );
   }
 }
@@ -62,13 +56,16 @@ class App extends React.PureComponent {
 const mapStateToProps = store => {
   return {
     auth: store.auth,
-    // isLoading: store.isLoading,
-    // user: store.user
   }
 };
 
 const mapDispatchToProps = {
   subscribeAuthentication
 };
+//
+// const mapDispatchToProps = dispatch => {(
+//   subscribeAuthentication: subscribeAuthentication(),
+//   push: page => dispatch(push(page))
+// });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

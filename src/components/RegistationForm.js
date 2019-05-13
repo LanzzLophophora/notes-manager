@@ -4,7 +4,7 @@ import { Form, Input, Tooltip, Icon, Button } from 'antd';
 // import { createUser } from '../store/auth';
 import {connect} from 'react-redux';
 
-import { registration } from '../store/auth/thunks';
+import { registrationUser } from '../store/auth/thunks';
 
 class NormalRegistrationForm extends React.Component {
   state = {
@@ -20,13 +20,13 @@ class NormalRegistrationForm extends React.Component {
     console.log('first step');
 
     form.validateFieldsAndScroll((error, values) => {
-      const { email, password, displayName } = values;
+      const { email, password, nickname } = values;
 
       if (error) {
         console.log('Received values of form: ', values);
       }
-      registration(email, password, displayName);
       console.log(values);
+      registration(email, password, nickname);
     });
   };
 
@@ -168,7 +168,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = {
-    registration
+    registration: registrationUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

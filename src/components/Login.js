@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 
-import { authenticate } from '../store/auth/thunks';
+import { authenticateUser } from '../store/auth/thunks';
 import {connect} from 'react-redux';
+// import './App.css';
 
 class NormalLoginForm extends React.Component {
   handleAuthenticate = event => {
@@ -25,36 +26,38 @@ class NormalLoginForm extends React.Component {
     const { error } = this.props;
     // console.log(error);
     return (
-      <Form onSubmit={this.handleAuthenticate} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('email', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(
-            <Checkbox>Remember me</Checkbox>
-          )}
-          <a className="login-form-forgot" href="">Forgot password</a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a href="/register">register now!</a>
-        </Form.Item>
-        {error && <p>{error}</p>}
-      </Form>
+      <div className="login-form">
+        <Form onSubmit={this.handleAuthenticate}>
+          <Form.Item>
+            {getFieldDecorator('email', {
+              rules: [{ required: true, message: 'Please input your username!' }],
+            })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your Password!' }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('remember', {
+              valuePropName: 'checked',
+              initialValue: true,
+            })(
+              <Checkbox>Remember me</Checkbox>
+            )}
+            <a className="login-form-forgot" href="">Forgot password</a>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              Log in
+            </Button>
+            Or <a href="/register">register now!</a>
+          </Form.Item>
+          {error && <p className="ant-row error" >{error}</p>}
+        </Form>
+      </div>
     );
   }
 }
@@ -68,7 +71,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = {
-  authenticate
+  authenticate: authenticateUser
 };
 
 
