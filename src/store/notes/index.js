@@ -1,1 +1,1 @@
-export { notesReducer } from './notesReducer';
+export { notes } from './reducer';

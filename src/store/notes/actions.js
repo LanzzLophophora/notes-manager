@@ -1,19 +1,20 @@
-import { CREATE_NOTE, DELETE_NOTE } from './constants';
+import { GET_NOTES_LIST_REQUEST, GET_NOTES_LIST_SUCCESS, GET_NOTES_LIST_ERROR, SET_FILTER } from './constants';
 
-export const createNote = note => {
-  return (dispatch) => {
-    dispatch({
-      type: CREATE_NOTE,
-      note
-    })
-  }
-};
+export const getNotesListRequest = () => ({
+  type: GET_NOTES_LIST_REQUEST
+});
 
-export const deleteNote = note => {
-  return (dispatch) => {
-    dispatch({
-      type: DELETE_NOTE,
-      note
-    })
-  }
-};
+export const getNotesListSuccess = notes => ({
+  type: GET_NOTES_LIST_SUCCESS,
+  payload: notes
+});
+
+export const getNotesListError = message => ({
+  type: GET_NOTES_LIST_ERROR,
+  payload: message
+});
+
+export const setFilter = filteredNotes => ({
+  type: SET_FILTER,
+  payload: filteredNotes
+});

@@ -1,64 +1,66 @@
-import { DELETE_NOTE, NOTE_ERROR, CREATE_NOTES_LIST, NOTE_REQUEST, NOTE_SUCCESS } from './constants';
-// import {AUTH_SUCCESS} from '../auth/constants';
+import { GET_NOTES_LIST_REQUEST, GET_NOTES_LIST_SUCCESS, GET_NOTES_LIST_ERROR, SET_FILTER } from './constants';
+import { DELETE_NOTE_SUCCESS, SAVE_NOTE_SUCCESS } from '../note/constants';
+import { DELETE_NOTES_GROUP_SUCCESS } from '../notesGroups/constants';
 
 const initialState = {
-  userId: '',
   notes: [],
+  filterNotes: [],
   error: "",
   loading: false
 };
 
-export const notesReducer = (state = initialState, action) => {
+export const notes = (state = initialState, action) => {
   switch (action.type) {
-    // case SET_USER_ID:
-    //   return {
-    //     ...state,
-    //     userId: action.payload
-    //   };
-    //
-    // case ADD_NOTE:
-    //   return {
-    //     ...state,
-    //     notes: [
-    //       ...state.notes,
-    //       action.payload
-    //     ]
-    //   };
 
-    case NOTE_REQUEST:
+    case GET_NOTES_LIST_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
 
-    case NOTE_SUCCESS:
+    case GET_NOTES_LIST_SUCCESS:
       return {
         ...state,
-        isLoading: false,
-        notes: [
-          ...state.notes,
-            action.payload
-        ]
+        loading: false,
+        notes: action.payload,
       };
 
-    case DELETE_NOTE:
+    case GET_NOTES_LIST_ERROR:
       return {
         ...state,
-        notes: state.notes.map(note =>
-          note.id === action.id ? { ...note, deleted: !note.deleted } : note
-        )
+        loading: false,
+        error: action.payload,
       };
 
-    case CREATE_NOTES_LIST:
+    case SET_FILTER:
       return {
         ...state,
-        notes: action.payload
+        filterNotes: action.payload
       };
 
-    case NOTE_ERROR:
+    case DELETE_NOTES_GROUP_SUCCESS:
       return {
         ...state,
-        error: action.payload
+        filterNotes: state.filterNotes.filter(fn => fn.id !== action.payload)
+      };
+
+    case SAVE_NOTE_SUCCESS: {
+      const updatedNotes = state.notes.map((note) => {
+        if (note.id === action.payload.id) {
+          return action.payload
+        }
+        return note;
+      });
+      return {
+        ...state,
+        notes: updatedNotes,
+      };
+    }
+
+    case DELETE_NOTE_SUCCESS:
+      return {
+        ...state,
+        notes: state.notes.filter(n => n.id !== action.payload)
       };
 
     default:

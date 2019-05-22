@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Button } from 'antd';
 
-// import { createUser } from '../store/auth';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
+import { Form, Input, Tooltip, Icon, Button } from 'antd';
 
 import { registrationUser } from '../store/auth/thunks';
 
@@ -10,41 +11,39 @@ class NormalRegistrationForm extends React.Component {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
+    error: ""
   };
-
 
   handleSubmit = event => {
     event.preventDefault();
-
-    const { registration, form } = this.props;
-    console.log('first step');
-
+    const { registrationUser, form } = this.props;
     form.validateFieldsAndScroll((error, values) => {
-      const { email, password, nickname } = values;
-
-      if (error) {
-        console.log('Received values of form: ', values);
+      const { email, password, confirm, name } = values;
+      if (password !== confirm) {
+        this.setState({
+          error: "Incorrect confirm password!"
+        })
+      } else {
+        registrationUser(email, password, name);
       }
-      console.log(values);
-      registration(email, password, nickname);
     });
   };
 
-
-  // handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   this.props.form.validateFieldsAndScroll((err, values) => {
-  //     if (!err) {
-  //       console.log('Received values of form: ', values);
-  //       const { createNewUser } = this.props;
-  //       createNewUser(values)
-  //     }
-  //   });
-  // };
+  componentDidMount() {
+    const { history, user, error } = this.props;
+    this.setState({
+      error
+    });
+    if (user) {
+      history.push('/notes');
+    }
+  }
 
   handleConfirmBlur = (e) => {
     const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+    this.setState({
+      confirmDirty: this.state.confirmDirty || !!value
+    });
   };
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -66,110 +65,90 @@ class NormalRegistrationForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
-    const { error } = this.props;
-
-
+    const { error } = this.state;
 
     return (
-      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item
-          label="E-mail"
-        >
-          {getFieldDecorator('email', {
-            rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
-            }, {
-              required: true, message: 'Please input your E-mail!',
-            }],
-          })(
-            <Input />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="Password"
-        >
-          {getFieldDecorator('password', {
-            rules: [{
-              required: true, message: 'Please input your password!',
-            }, {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-            <Input type="password" />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="Confirm Password"
-        >
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!',
-            }, {
-              validator: this.compareToFirstPassword,
-            }],
-          })(
-            <Input type="password" onBlur={this.handleConfirmBlur} />
-          )}
-        </Form.Item>
-        <Form.Item
-          label={(
-            <span>
+      <div className={"my-form"}>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Item
+            label="E-mail"
+          >
+            {getFieldDecorator('email', {
+              rules: [{
+                type: 'email', message: 'The input is not valid E-mail!',
+              }, {
+                required: true, message: 'Please input your E-mail!',
+              }],
+            })(
+              <Input/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Password"
+          >
+            {getFieldDecorator('password', {
+              rules: [{
+                required: true, message: 'Please input your password!',
+              }, {
+                validator: this.validateToNextPassword,
+              }],
+            })(
+              <Input type="password"/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+          >
+            {getFieldDecorator('confirm', {
+              rules: [{
+                required: true, message: 'Please confirm your password!',
+              }, {
+                validator: this.compareToFirstPassword,
+              }],
+            })(
+              <Input type="password" onBlur={this.handleConfirmBlur}/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label={(
+              <span>
               Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <Icon type="question-circle-o" />
+                <Tooltip title="What do you want others to call you?">
+                <Icon type="question-circle-o"/>
               </Tooltip>
             </span>
-          )}
-        >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-          })(
-            <Input />
-          )}
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
-        </Form.Item>
-        {error && <p>{error}</p>}
-      </Form>
+            )}
+          >
+            {getFieldDecorator('name', {
+              rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+            })(
+              <Input/>
+            )}
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">Register</Button>
+          </Form.Item>
+          {error && <p className="ant-row error">{error}</p>}
+        </Form>
+      </div>
     );
   }
 }
 
 const RegistrationForm = Form.create({ name: 'register' })(NormalRegistrationForm);
 
-const mapStateToProps = store => {
-  return {
-    error: store.auth.error,
-  }
-};
+const mapStateToProps = store => ({
+  user: store.auth.user,
+  error: store.auth.error,
+});
 
 const mapDispatchToProps = {
-    registration: registrationUser
+  registrationUser
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
-
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RegistrationForm)
+);

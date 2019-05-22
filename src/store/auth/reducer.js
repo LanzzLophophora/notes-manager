@@ -1,32 +1,37 @@
-import { LOG_OUT, SET_NAME, AUTH_REQUEST, AUTH_SUCCESS, AUTH_ERROR } from './constants';
+import {
+  SET_NAME,
+  FETCH_AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_ERROR,
+  LOG_OUT
+} from './constants';
 
 const initialState = {
   user: undefined,
-  isLoading: false,
+  isLoading: true,
   error: '',
-  noReg: false
 };
 
-export const authReducer = (state = initialState, action) => {
+export const auth = (state = initialState, action) => {
   switch (action.type) {
-    case AUTH_REQUEST:
+    case FETCH_AUTH_REQUEST:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       };
 
     case AUTH_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         user: action.payload,
-        isLoading: false
       };
 
     case AUTH_ERROR:
       return {
         ...state,
         isLoading: false,
-        error: action.payload
+        error: action.payload,
       };
 
     case SET_NAME:
@@ -41,7 +46,8 @@ export const authReducer = (state = initialState, action) => {
     case LOG_OUT:
       return {
         ...state,
-        user: undefined
+        isLoading: false,
+        user: undefined,
       };
 
     default:

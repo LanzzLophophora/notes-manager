@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
+  "short_name": "Notes Manager",
   "name": "Create React App Sample",
+  "author": "Lanzz_Lophophora",
   "icons": [
     {
       "src": "favicon.ico",

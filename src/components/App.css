@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background: #b7b7b7;
 }
 
 .App-logo {
@@ -52,4 +53,143 @@
 .login-form {
   width: 40%;
   margin: auto;
+}
+
+.my-form {
+  width: 50%;
+  margin: 20px auto;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 15px;
+  align-items: center;
+  background-color: #1890ff;
+}
+
+.header-content h3 {
+  color: #FFF;
+  margin: 0;
+}
+
+.notes-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.notes-list-wrapper {
+  width: 50%;
+  margin: 20px auto;
+}
+
+.note-item-wrapper {
+  width: 47%;
+  padding: 10px;
+  border: 2px solid gray;
+  height: 200px;
+  position: relative;
+  margin: 10px;
+}
+
+.note-item-buttons {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.note-item-text {
+  height: 130px;
+  text-align: center;
+}
+
+.note-view {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.note-view textarea {
+  resize: none;
+}
+
+.span-completed {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color: #1890ff;
+}
+
+.my-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
+  margin: auto;
+  padding: 10px 15px;
+}
+
+.note-item {
+  width: 100%;
+}
+
+.note-item-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.groups-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px 0 0;
+  justify-content: center;
+}
+
+.trash-page {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 20px auto;
+  align-items: center;
+}
+
+.trash-page .my-buttons {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.trash-page .notes-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.trash-page .note-item-wrapper {
+  width: 45%;
+  height: 120px;
+  margin: 10px;
+}
+
+.trash-page .note-item-text {
+  height: 45px;
+}
+
+.spin-wrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.absolute-center {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.d-flex {
+  display: flex;
 }

@@ -1,33 +1,30 @@
-import { AUTH_REQUEST, AUTH_SUCCESS, AUTH_ERROR, LOG_OUT, LOG_IN } from './constants';
+import {
+  FETCH_AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_ERROR,
+  SET_NAME,
+  LOG_OUT
+} from './constants';
 
-export const authenticateRequest = () => {
-  return  {
-    type: AUTH_REQUEST
-  }
-};
+export const authenticateRequest = () => ({
+  type: FETCH_AUTH_REQUEST
+});
 
-export const authenticateSuccess = user => {
-  return {
-    type: AUTH_SUCCESS,
-    payload: user
-  }
-};
+export const authenticateSuccess = user => ({
+  type: AUTH_SUCCESS,
+  payload: user
+});
 
-export const authenticateError = message => {
-  return {
-    type: AUTH_ERROR,
-    payload: message
-  }
-};
+export const authenticateError = message => ({
+  type: AUTH_ERROR,
+  payload: message
+});
 
-export const logOut = () => {
-  return {
-    type: LOG_OUT,
-  }
-};
+export const logOut = () => ({
+  type: LOG_OUT
+});
 
-export const login = () => {
-  return {
-    type: LOG_IN
-  }
-};
+export const setLocalNickname = nickname => ({
+  type: SET_NAME,
+  payload: nickname
+});

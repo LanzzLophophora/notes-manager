@@ -2,20 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
-
 import * as serviceWorker from './serviceWorker';
 
 import configureStore, { history } from './store';
 import App from './components/App';
-import './index.css';
 
-// const store = initializeStore();
+import './index.css';
+import './components/App.css';
+import "antd/dist/antd.css";
+
 const store = configureStore();
 
 ReactDOM.render(
-  <Provider store={ store }>
+  <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <App history={history}/>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root'));

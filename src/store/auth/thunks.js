@@ -1,124 +1,75 @@
-import firebase from '../config/Fire';
-import { authenticateRequest, authenticateSuccess, authenticateError, logOut } from './actions';
+import { authenticateRequest, authenticateSuccess, authenticateError, setLocalNickname, logOut } from './actions';
 import { push } from 'connected-react-router';
+import { registration, signIn, signOut, getUserName, setName } from '../api/auth';
+import firebase from '../api/config/firebase';
 
-const makeUser = (user, nickname) => ({
+const makeUser = (user) => ({
   uid: user.uid,
   email: user.email,
-  nickname
+  nickname: user.nickname
 });
 
 export const logOutUser = () => dispatch => {
-  // const firebaseAuth = firebase.getInstance();
-  // firebaseAuth.logOut();
-  firebase.auth().signOut()
-    .then(() => {
-      console.log('out before dispatch');
-        dispatch(logOut());
-        console.log('out after dispatch');
-
-      }
-    )
-    .then( () => {
-      const user = firebase.auth().getCurrentUser();
-      console.log(user);
-        dispatch(push('/'));
-
-      }
-    )
-};
-
-export const authenticate = (email, password) => dispatch => {
   dispatch(authenticateRequest());
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  signOut()
+    .then(() => {
+      dispatch(logOut());
+      dispatch(push('/login'));
+    })
+    .catch(({ message }) => {
+      dispatch(authenticateError(message));
+    });
+};
+
+export const authenticateUser = (email, password) => dispatch => {
+  dispatch(authenticateRequest());
+
+  signIn(email, password)
     .then(({ user }) => {
-      // console.log(user);
-      dispatch(authenticateSuccess(makeUser(user)));
+      getUserName()
+        .then(data => {
+          dispatch(authenticateSuccess(makeUser(user)));
+          dispatch(setLocalNickname(data.data().name));
+        })
+        .then(() => {
+          dispatch(push('/notes'));
+        })
+    })
+    .catch(({ message }) => {
+      console.log(message, 'error');
+      dispatch(authenticateError(message));
+    });
+};
+
+export const registrationUser = (email, password, name) => dispatch => {
+  dispatch(authenticateRequest());
+
+  registration(email, password)
+    .then(() => {
+      setName(name);
+      dispatch(push('/notes'));
     })
     .catch(({ message }) => {
       dispatch(authenticateError(message));
     })
 };
 
-export const registration = (email, password, nickname) => dispatch => {
-  dispatch(authenticateRequest());
-
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      // console.log(user);
-
-      const user = firebase.auth().currentUser;
-      user.updateProfile({
-        displayName: nickname,
-      }).then(()=>{console.log('ok')})
-
-
-      // dispatch(authenticateSuccess());
-      // dispatch(push('/login'));
-
-    })
-    .then( () => {
-      // const user = firebase.auth().currentUser;
-      // user.updateProfile({
-      //   displayName: "Jane Q. User",
-      //   photoURL: "https://example.com/jane-q-user/profile.jpg"
-
-
-        dispatch(authenticateSuccess());
-
-      // })
-      //   .then(function() {
-      //   // Update successful.
-      // }).catch(function(error) {
-      //   // An error happened.
-      // });
-    })
-//     .then( () =>
-//       {
-//         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-//         .then(function() {
-//           // Existing and future Auth states are now persisted in the current
-//           // session only. Closing the window would clear any existing state even
-//           // if a user forgets to sign out.
-//           // ...
-//           // New sign-in will be persisted with session persistence.
-//           return firebase.auth().signInWithEmailAndPassword(email, password);
-//         })
-//         .catch(function(error) {
-//           // Handle Errors here.
-//           var errorCode = error.code;
-//           var errorMessage = error.message;
-//         });}
-//
-//
-//
-// )
-    .catch(function ({ message }) {
-      dispatch(authenticateError(message));
-    });
-};
-
 export const subscribeAuthentication = () => dispatch => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      // set user object to state
-      // user -> User
       dispatch(authenticateSuccess(makeUser(user)));
-      dispatch(push('/'));
-
+      getUserName()
+        .then(data => {
+          dispatch(authenticateSuccess(makeUser(user)));
+          dispatch(setLocalNickname(data.data().name));
+        })
+        .catch(({ message }) => {
+          dispatch(authenticateError(message));
+        });
     } else {
-      // remove user object from state
-      // user -> undefined
+      dispatch(authenticateSuccess());
       dispatch(logOut());
-      // const { noReg } =
-      console.log("No users");
-      // if (!noReg) {
-      //   dispatch(push('/login'));
-      // } else {
-      //   dispatch(push('/register'));
-      // }
-
     }
   })
 };

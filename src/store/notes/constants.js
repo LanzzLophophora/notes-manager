@@ -1,2 +1,5 @@
-export const CREATE_NOTE = "notes/CREATE_NOTE";
-export const DELETE_NOTE = "notes/DELETE_NOTE";
+export const GET_NOTES_LIST_REQUEST = 'notes/GET_NOTES_LIST_REQUEST';
+export const GET_NOTES_LIST_SUCCESS = 'notes/GET_NOTES_LIST_SUCCESS';
+export const GET_NOTES_LIST_ERROR = 'notes/GET_NOTES_LIST_ERROR';
+
+export const SET_FILTER = 'notes/SET_FILTER';

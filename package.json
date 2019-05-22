@@ -16,11 +16,15 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
+    "react-select": "^2.4.3",
     "redux": "^4.0.1",
     "redux-firebase": "^0.3.3",
     "redux-firestore": "^0.7.3",
     "redux-thunk": "^2.3.0",
-    "route": "^0.2.5"
+    "route": "^0.2.5",
+    "sweetalert2": "^8.11.1",
+    "sweetalert2-react-content": "^1.1.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
