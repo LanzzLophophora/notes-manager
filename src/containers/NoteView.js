@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { handleNoteFetching, handleNoteSaving, handleNoteDeleting } from '../store/note/thunks';
-import {
-  handleNotesGroupCreation,
-  handleNotesGroupsGetting,
-  handleNotesGroupsManaging
-} from '../store/notesGroups/thunks';
+import { handleNotesGroupCreation, handleNotesGroupsGetting, handleNotesGroupsManaging } from '../store/notesGroups/thunks';
 
 import { Button, Input, Icon } from 'antd/lib';
 import Swal from 'sweetalert2';

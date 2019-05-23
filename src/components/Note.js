@@ -125,6 +125,8 @@ Note.propTypes = {
   body: PropTypes.string,
   completed: PropTypes.bool,
   deleted: PropTypes.bool,
+  handleNoteSaving: PropTypes.func,
+  handleNoteDeleting: PropTypes.func,
 };
 
 const mapStateToProps = store => ({
